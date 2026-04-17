@@ -11,6 +11,7 @@ import 'diff2html/bundles/css/diff2html.min.css';
 import styles from './shared.module.css';
 import PageLayout from '@/components/PageLayout';
 import DiffOutputContainer from '@/components/DiffOutputContainer';
+import FeaturesShowcase from '@/components/FeaturesShowcase';
 
 type ViewMode = 'line-by-line' | 'side-by-side';
 
@@ -252,6 +253,139 @@ export default function Home() {
         htmlOutput={htmlOutput}
         fileCount={fileCount}
         metrics={metrics}
+      />
+
+      <FeaturesShowcase
+        badges={['Private', 'Secure', 'Free']}
+        heroTitle='Diff Forge — Visualize Code Changes Instantly'
+        heroDescription="The fastest diff visualizer to inspect code changes, review patches, and share formatted diffs. Whether you're reviewing a pull request, auditing a release, or debugging a deployment — DiffForge shows exactly what changed and why. 100% client-side. No uploads. No tracking."
+        features={[
+          {
+            title: 'Instant Diff Visualization',
+            description:
+              'Paste any unified diff or upload a .patch file and see a beautiful, color-coded diff in seconds. Supports all standard git diff formats with added/deleted line highlights at the word level.',
+            visual: (
+              <div className={styles.codeMockup}>
+                <div className={styles.codeMockupHeader}>
+                  <div
+                    className={styles.codeMockupDot}
+                    style={{ background: '#f85149' }}
+                  />
+                  <div
+                    className={styles.codeMockupDot}
+                    style={{ background: '#e3b341' }}
+                  />
+                  <div
+                    className={styles.codeMockupDot}
+                    style={{ background: '#56d364' }}
+                  />
+                  <span style={{ marginLeft: 4 }}>parser.ts</span>
+                </div>
+                {[
+                  ['–', "import { readFile } from 'fs';", 'del'],
+                  ['+', "import { readFile } from 'fs/promises';", 'add'],
+                  ['+', "import { resolve } from 'path';", 'add'],
+                  [' ', 'export async function parseConfig(path) {', ''],
+                  [' ', '  return JSON.parse(await readFile(...));', ''],
+                ].map(([prefix, code, type], i) => (
+                  <div
+                    key={i}
+                    className={`${styles.codeLine} ${type === 'add' ? styles.codeLineAdd : type === 'del' ? styles.codeLineDel : ''}`}
+                  >
+                    <span className={styles.codeLinePrefix}>{prefix}</span>
+                    <span>{code}</span>
+                  </div>
+                ))}
+                <div className={styles.codeFooter}>
+                  <span className={styles.codeFooterAdd}>+3 additions</span>
+                  <span className={styles.codeFooterDel}>–1 deletion</span>
+                </div>
+              </div>
+            ),
+          },
+          {
+            title: 'Side-by-Side & Line-by-Line Views',
+            description:
+              'Switch between split side-by-side view (great for comparing long files) and unified line-by-line view (perfect for quick inline reviews) with a single click. No reload required.',
+            visual: (
+              <div
+                className={styles.featureVisual}
+                style={{ border: 'none', boxShadow: 'none' }}
+              >
+                <div className={styles.splitMockup}>
+                  <div className={styles.splitPanel}>
+                    <div
+                      className={`${styles.splitPanelLabel} ${styles.splitPanelLabelOld}`}
+                    >
+                      Original
+                    </div>
+                    {['import React;', 'const App = () =>', '<Main />'].map(
+                      (l, i) => (
+                        <div
+                          key={i}
+                          className={`${styles.codeLine} ${i === 1 ? styles.codeLineDel : ''}`}
+                        >
+                          <span>{l}</span>
+                        </div>
+                      ),
+                    )}
+                  </div>
+                  <div className={styles.splitPanel}>
+                    <div
+                      className={`${styles.splitPanelLabel} ${styles.splitPanelLabelNew}`}
+                    >
+                      Changed
+                    </div>
+                    {[
+                      'import React;',
+                      'const Dashboard = () =>',
+                      '<Main />',
+                    ].map((l, i) => (
+                      <div
+                        key={i}
+                        className={`${styles.codeLine} ${i === 1 ? styles.codeLineAdd : ''}`}
+                      >
+                        <span>{l}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ),
+          },
+          {
+            title: 'Export & Share',
+            description:
+              'Download a complete, self-contained HTML file with embedded styles, metrics summary, and interactive collapse — ready to share with teammates or attach to a code review document.',
+            visual: (
+              <div className={styles.codeMockup}>
+                <div className={styles.codeMockupHeader}>
+                  <span>📄</span>
+                  <span>diff-output.html</span>
+                </div>
+                {[
+                  ['DiffForge Report', 'summary-banner'],
+                  ['2 files changed', 'chip-files'],
+                  ['+47 additions', 'chip-add'],
+                  ['–12 deletions', 'chip-del'],
+                ].map(([text, cls], i) => (
+                  <div
+                    key={i}
+                    className={styles.codeLine}
+                    style={{ paddingLeft: i > 0 ? 24 : 14 }}
+                  >
+                    <span style={{ opacity: i === 0 ? 1 : 0.7 }}>{text}</span>
+                  </div>
+                ))}
+                <div className={styles.codeFooter}>
+                  <span style={{ color: 'var(--accent)' }}>
+                    🔒 100% Client-Side
+                  </span>
+                </div>
+              </div>
+            ),
+          },
+        ]}
       />
     </PageLayout>
   );

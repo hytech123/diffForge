@@ -739,6 +739,241 @@
   }
 }
 
+/* --------------- Features Showcase Section --------------- */
+
+.featuresSection {
+  width: 100%;
+  padding: 0 0 64px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.featuresDivider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 48px 0 56px;
+}
+
+/* Hero */
+.featuresHero {
+  margin-bottom: 56px;
+}
+
+.badgeRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 99px;
+  border: 1px solid rgba(45, 212, 168, 0.35);
+  color: var(--accent);
+  background: var(--accent-muted);
+  letter-spacing: 0.04em;
+}
+
+.featuresTitle {
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+  margin: 0 0 16px;
+  letter-spacing: -0.03em;
+}
+
+.featuresDesc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 640px;
+  margin: 0;
+}
+
+/* Feature blocks */
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.featureBlock {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.featureBlock:nth-child(even) {
+  direction: rtl;
+}
+
+.featureBlock:nth-child(even) > * {
+  direction: ltr;
+}
+
+.featureText {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.featureTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.featureDesc {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin: 0;
+}
+
+.featureVisual {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Code mockup inside visuals */
+.codeMockup {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.codeMockupHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.codeMockupDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.codeLine {
+  display: flex;
+  align-items: center;
+  padding: 3px 14px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.codeLineAdd {
+  background: rgba(35, 134, 54, 0.18);
+  color: #56d364;
+}
+
+.codeLineDel {
+  background: rgba(218, 54, 51, 0.18);
+  color: #f85149;
+}
+
+.codeLinePrefix {
+  width: 16px;
+  flex-shrink: 0;
+  color: var(--text-tertiary);
+  font-weight: 700;
+}
+
+.codeFooter {
+  display: flex;
+  gap: 12px;
+  padding: 8px 14px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.codeFooterAdd {
+  color: #56d364;
+}
+.codeFooterDel {
+  color: #f85149;
+}
+
+/* Split mockup */
+.splitMockup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.splitPanel {
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+}
+
+.splitPanel:first-child {
+  border-right: 1px solid var(--border);
+}
+
+.splitPanelLabel {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.splitPanelLabelOld {
+  background: rgba(218, 54, 51, 0.15);
+  color: #f85149;
+}
+
+.splitPanelLabelNew {
+  background: rgba(35, 134, 54, 0.15);
+  color: #56d364;
+}
+
+/* Scroll animation */
+.featureAnimate {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease;
+}
+
+.featureBlock {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease;
+}
+
+.featureVisible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
 /* --------------- Responsive --------------- */
 
 @media (max-width: 640px) {

@@ -6,6 +6,7 @@ import 'diff2html/bundles/css/diff2html.min.css';
 import styles from '@/app/shared.module.css';
 import PageLayout from '@/components/PageLayout';
 import DiffOutputContainer from '@/components/DiffOutputContainer';
+import FeaturesShowcase from '@/components/FeaturesShowcase';
 
 type ViewMode = 'line-by-line' | 'side-by-side';
 
@@ -229,6 +230,129 @@ export default function ComparePage() {
         htmlOutput={htmlOutput}
         fileCount={fileCount}
         metrics={metrics}
+      />
+
+      <FeaturesShowcase
+        badges={['.docx', '.md', '.txt']}
+        heroTitle='Compare Documents Online — Free & Private'
+        heroDescription='Upload any two Word, Markdown, or text files and instantly see what changed between them. DiffForge extracts clean text content and renders a precise, character-level diff. No server, no storage, no account required. Works completely offline in your browser.'
+        features={[
+          {
+            title: 'Extract & Compare Word Docs',
+            description:
+              'DiffForge reads raw text from .docx files using mammoth.js — entirely in your browser. Then diffs the contents using the same algorithm as Git, giving you a precise patch between any two documents.',
+            visual: (
+              <div className={styles.codeMockup}>
+                <div className={styles.codeMockupHeader}>
+                  <span>📄</span>
+                  <span>contract_v1.docx → contract_v2.docx</span>
+                </div>
+                {[
+                  ['–', 'Payment due within 14 days.', 'del'],
+                  ['+', 'Payment due within 30 days.', 'add'],
+                  [' ', 'All disputes subject to arbitration.', ''],
+                  ['–', 'Governing law: California.', 'del'],
+                  ['+', 'Governing law: New York.', 'add'],
+                ].map(([prefix, code, type], i) => (
+                  <div
+                    key={i}
+                    className={`${styles.codeLine} ${type === 'add' ? styles.codeLineAdd : type === 'del' ? styles.codeLineDel : ''}`}
+                  >
+                    <span className={styles.codeLinePrefix}>{prefix}</span>
+                    <span>{code}</span>
+                  </div>
+                ))}
+                <div className={styles.codeFooter}>
+                  <span className={styles.codeFooterAdd}>+2 changes</span>
+                  <span className={styles.codeFooterDel}>-2 removed</span>
+                </div>
+              </div>
+            ),
+          },
+          {
+            title: 'Side-by-Side Document Comparison',
+            description:
+              'Switch between side-by-side split view and unified line-by-line view. Side-by-side is ideal for long documents like contracts or reports where you need to see context on both sides simultaneously.',
+            visual: (
+              <div className={styles.splitMockup}>
+                <div className={styles.splitPanel}>
+                  <div
+                    className={`${styles.splitPanelLabel} ${styles.splitPanelLabelOld}`}
+                  >
+                    Original
+                  </div>
+                  {[
+                    'The project deadline is Friday.',
+                    'Budget allocated: $50,000.',
+                    'Team size: 4 engineers.',
+                  ].map((l, i) => (
+                    <div
+                      key={i}
+                      className={`${styles.codeLine} ${i === 1 ? styles.codeLineDel : ''}`}
+                    >
+                      <span>{l}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className={styles.splitPanel}>
+                  <div
+                    className={`${styles.splitPanelLabel} ${styles.splitPanelLabelNew}`}
+                  >
+                    Modified
+                  </div>
+                  {[
+                    'The project deadline is Friday.',
+                    'Budget allocated: $75,000.',
+                    'Team size: 4 engineers.',
+                  ].map((l, i) => (
+                    <div
+                      key={i}
+                      className={`${styles.codeLine} ${i === 1 ? styles.codeLineAdd : ''}`}
+                    >
+                      <span>{l}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ),
+          },
+          {
+            title: 'Export with Metrics & Collapse',
+            description:
+              'Download a standalone HTML report with a summary banner (files changed, lines added/removed), collapsible file sections, and all diff styles embedded. Perfect for sending to clients or attaching to audit reports.',
+            visual: (
+              <div className={styles.codeMockup}>
+                <div className={styles.codeMockupHeader}>
+                  <span>📊</span>
+                  <span>Report Summary</span>
+                </div>
+                <div className={styles.codeLine}>
+                  <span style={{ color: '#79c0ff', fontWeight: 600 }}>
+                    1 document compared
+                  </span>
+                </div>
+                <div className={`${styles.codeLine} ${styles.codeLineAdd}`}>
+                  <span className={styles.codeLinePrefix}>+</span>
+                  <span>2 paragraphs added</span>
+                </div>
+                <div className={`${styles.codeLine} ${styles.codeLineDel}`}>
+                  <span className={styles.codeLinePrefix}>-</span>
+                  <span>1 paragraph removed</span>
+                </div>
+                <div className={styles.codeLine}>
+                  <span style={{ opacity: 0.5 }}>
+                    ▾ contract_v2.docx &nbsp; [click to collapse]
+                  </span>
+                </div>
+                <div className={styles.codeFooter}>
+                  <span style={{ color: 'var(--accent)' }}>
+                    Self-contained HTML — no dependencies
+                  </span>
+                </div>
+              </div>
+            ),
+          },
+        ]}
       />
     </PageLayout>
   );
