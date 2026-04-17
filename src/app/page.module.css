@@ -1,0 +1,735 @@
+/* ============================================
+   page.module.css — Premium Developer Tool UI
+   ============================================ */
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --------------- Header --------------- */
+
+.header {
+  padding: 0 32px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(
+    180deg,
+    rgba(22, 27, 34, 0.95),
+    rgba(13, 17, 23, 0.98)
+  );
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.logoArea {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logoIcon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--accent), #1a9e7a);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: var(--bg-primary);
+  font-weight: 800;
+  box-shadow: 0 2px 8px rgba(45, 212, 168, 0.2);
+}
+
+.logoText {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.logoText span {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* --------------- Main Content --------------- */
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 28px 24px;
+  gap: 24px;
+}
+
+/* --------------- Input Section --------------- */
+
+.inputSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dropZone {
+  position: relative;
+  border: 1.5px dashed rgba(139, 148, 158, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 36px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  background: linear-gradient(
+    180deg,
+    rgba(22, 27, 34, 0.6),
+    rgba(28, 33, 40, 0.3)
+  );
+  overflow: hidden;
+}
+
+.dropZone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 100%,
+    var(--accent-muted),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-slow);
+  pointer-events: none;
+}
+
+.dropZone:hover {
+  border-color: rgba(45, 212, 168, 0.35);
+  background: linear-gradient(
+    180deg,
+    rgba(22, 27, 34, 0.8),
+    rgba(28, 33, 40, 0.5)
+  );
+}
+
+.dropZone:hover::before {
+  opacity: 1;
+}
+
+.dropZoneActive {
+  border-color: var(--accent) !important;
+  border-style: solid !important;
+  box-shadow:
+    0 0 0 3px var(--accent-muted),
+    var(--shadow-glow);
+}
+
+.dropZoneActive::before {
+  opacity: 1;
+}
+
+.dropContent {
+  position: relative;
+  z-index: 1;
+}
+
+.dropIcon {
+  font-size: 32px;
+  margin-bottom: 10px;
+  opacity: 0.6;
+  filter: grayscale(0.3);
+}
+
+.dropTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.dropHint {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--text-tertiary);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+.textareaWrapper {
+  position: relative;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 160px;
+  padding: 14px 16px;
+  background: rgba(22, 27, 34, 0.5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  resize: vertical;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast);
+  outline: none;
+}
+
+.textarea::placeholder {
+  color: var(--text-tertiary);
+  font-size: 12px;
+}
+
+.textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-muted);
+  background: rgba(22, 27, 34, 0.8);
+}
+
+/* --------------- Actions Bar --------------- */
+
+.actionsBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.leftActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.convertBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  background: linear-gradient(135deg, var(--accent), #1a9e7a);
+  color: var(--bg-primary);
+  font-weight: 600;
+  font-size: 13px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.3),
+    0 0 12px rgba(45, 212, 168, 0.1);
+  letter-spacing: -0.01em;
+}
+
+.convertBtn:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(45, 212, 168, 0.15);
+  filter: brightness(1.05);
+}
+
+.convertBtn:active {
+  transform: translateY(0);
+  filter: brightness(0.95);
+}
+
+.convertBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+  filter: none;
+  box-shadow: none;
+}
+
+.clearBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 9px 14px;
+  background: transparent;
+  color: var(--text-tertiary);
+  font-size: 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.clearBtn:hover {
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--border);
+}
+
+/* View mode toggle */
+
+.viewToggle {
+  display: flex;
+  background: rgba(22, 27, 34, 0.6);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 2px;
+  gap: 2px;
+}
+
+.viewBtn {
+  padding: 6px 14px;
+  background: transparent;
+  color: var(--text-tertiary);
+  font-size: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.viewBtn:hover {
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.viewBtnActive {
+  background: var(--accent-muted) !important;
+  color: var(--accent) !important;
+  font-weight: 600;
+}
+
+/* --------------- Output Section --------------- */
+
+.outputSection {
+  animation: fadeSlideIn var(--transition-slow) ease-out;
+}
+
+.outputHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.outputTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fileCount {
+  font-size: 11px;
+  background: var(--accent-muted);
+  color: var(--accent);
+  padding: 1px 8px;
+  border-radius: 99px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.outputActions {
+  display: flex;
+  gap: 6px;
+}
+
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  background: transparent;
+  color: var(--text-tertiary);
+  font-size: 11px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-weight: 500;
+}
+
+.iconBtn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.diffOutput {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+/* --------------- Empty State --------------- */
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  color: var(--text-tertiary);
+  text-align: center;
+  gap: 12px;
+}
+
+.emptyIcon {
+  font-size: 36px;
+  opacity: 0.25;
+}
+
+.emptyTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.emptyHint {
+  font-size: 12px;
+  max-width: 340px;
+  line-height: 1.7;
+  color: var(--text-tertiary);
+}
+
+/* --------------- Progress Bar --------------- */
+
+.progressWrapper {
+  margin-top: 16px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: rgba(240, 246, 252, 0.05);
+}
+
+.progressBar {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px var(--accent-muted);
+}
+
+.progressText {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* --------------- PDF Modal --------------- */
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 17, 23, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeIn var(--transition-fast) ease-out;
+}
+
+.modal {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: scaleIn var(--transition-fast) ease-out;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modalTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  transition: color var(--transition-fast);
+}
+
+.closeBtn:hover {
+  color: var(--text-primary);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.textInput {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.textInput:focus {
+  border-color: var(--accent);
+}
+
+.fileInputWrapper {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.logoPreview {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  background: var(--bg-surface);
+  border: 1px dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.logoPreview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.uploadLogoBtn {
+  padding: 8px 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.uploadLogoBtn:hover {
+  background: var(--bg-hover);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* --------------- PDF Template (Hidden) --------------- */
+
+.pdfTemplateContainer {
+  display: none;
+  width: 1024px;
+  padding: 0;
+  background: #ffffff;
+  color: #1a1a1a;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -9999;
+  letter-spacing: normal;
+}
+
+.pdfPrintMode {
+  display: block !important;
+}
+
+.pdfHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 32px 40px;
+  border-bottom: 2px solid #e1e4e8;
+  background: #f6f8fa;
+}
+
+.pdfLogo {
+  max-width: 120px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.pdfBrandText {
+  font-size: 20px;
+  font-weight: 700;
+  color: #24292e;
+}
+
+.pdfMetrics {
+  display: flex;
+  gap: 32px;
+  padding: 24px 40px;
+  background: #ffffff;
+}
+
+.pdfMetricBox {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pdfMetricValue {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.pdfMetricLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #6a737d;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.valAdd {
+  color: #2ea043;
+}
+.valDel {
+  color: #d73a49;
+}
+.valFile {
+  color: #0366d6;
+}
+
+.pdfContent {
+  padding: 0 40px 40px 40px;
+}
+
+/* --------------- Footer --------------- */
+
+.footer {
+  padding: 16px 24px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.01em;
+}
+
+/* --------------- Animations --------------- */
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------- Responsive --------------- */
+
+@media (max-width: 640px) {
+  .header {
+    padding: 0 16px;
+  }
+
+  .main {
+    padding: 20px 16px;
+    gap: 16px;
+  }
+
+  .dropZone {
+    padding: 28px 16px;
+  }
+
+  .actionsBar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .leftActions {
+    justify-content: stretch;
+  }
+
+  .convertBtn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .viewToggle {
+    justify-content: center;
+  }
+
+  .outputHeader {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+}

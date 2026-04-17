@@ -1,0 +1,233 @@
+/* ============================================
+   Design System — Diff to HTML Converter
+   ============================================ */
+
+:root {
+  /* Core palette — warm charcoal + teal accent */
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-tertiary: #1c2128;
+  --bg-surface: #21262d;
+  --bg-hover: #292e36;
+
+  --text-primary: #e6edf3;
+  --text-secondary: #8b949e;
+  --text-tertiary: #6e7681;
+
+  --accent: #2dd4a8;
+  --accent-muted: rgba(45, 212, 168, 0.15);
+  --accent-hover: #3de8ba;
+
+  --border: rgba(240, 246, 252, 0.06);
+  --border-subtle: rgba(240, 246, 252, 0.04);
+  --border-accent: rgba(45, 212, 168, 0.3);
+
+  --diff-add-bg: rgba(35, 134, 54, 0.18);
+  --diff-add-text: #56d364;
+  --diff-del-bg: rgba(218, 54, 51, 0.18);
+  --diff-del-text: #f85149;
+  --diff-chunk-bg: rgba(56, 139, 253, 0.1);
+  --diff-chunk-text: #79c0ff;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 24px rgba(45, 212, 168, 0.08);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), 'SF Mono', 'Fira Code', monospace;
+
+  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reset — exclude diff2html elements */
+/* *:not([class^='d2h-']):not(td):not(tr):not(th):not(table):not(tbody):not(
+    thead
+  ) {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+} */
+
+html {
+  height: 100%;
+  color-scheme: dark;
+}
+
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-sans);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--accent-hover);
+}
+
+::selection {
+  background: var(--accent-muted);
+  color: var(--accent);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-surface);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-hover);
+}
+
+/* ============================================
+   diff2html Overrides — COLORS & THEME ONLY
+   DO NOT override layout/sizing properties!
+   ============================================ */
+
+.d2h-wrapper {
+  font-family: var(--font-mono) !important;
+  font-size: 13px !important;
+}
+
+.d2h-file-header {
+  background: var(--bg-secondary) !important;
+  border-bottom: 1px solid var(--border) !important;
+  font-family: var(--font-sans) !important;
+}
+
+.d2h-file-name-wrapper {
+  font-family: var(--font-sans) !important;
+}
+
+.d2h-file-name {
+  color: var(--text-primary) !important;
+}
+
+.d2h-tag {
+  background: var(--accent-muted) !important;
+  color: var(--accent) !important;
+  border: none !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.d2h-diff-table {
+  font-family: var(--font-mono) !important;
+}
+
+.d2h-code-line-ctn {
+  color: var(--text-primary) !important;
+}
+
+/* Additions */
+.d2h-ins {
+  background: var(--diff-add-bg) !important;
+  border-color: transparent !important;
+}
+
+.d2h-ins .d2h-code-line-ctn {
+  color: var(--diff-add-text) !important;
+}
+
+.d2h-ins .d2h-code-line-ctn ins,
+.d2h-ins .d2h-code-line-ctn .d2h-change {
+  background: rgba(35, 134, 54, 0.4) !important;
+  text-decoration: none !important;
+}
+
+/* Deletions */
+.d2h-del {
+  background: var(--diff-del-bg) !important;
+  border-color: transparent !important;
+}
+
+.d2h-del .d2h-code-line-ctn {
+  color: var(--diff-del-text) !important;
+}
+
+.d2h-del .d2h-code-line-ctn del,
+.d2h-del .d2h-code-line-ctn .d2h-change {
+  background: rgba(218, 54, 51, 0.4) !important;
+  text-decoration: none !important;
+}
+
+/* Chunk info */
+.d2h-info {
+  background: var(--diff-chunk-bg) !important;
+  border-color: transparent !important;
+  color: var(--diff-chunk-text) !important;
+}
+
+.d2h-code-line-prefix {
+  color: var(--text-tertiary) !important;
+  user-select: none;
+}
+
+.d2h-code-linenumber {
+  color: var(--text-tertiary) !important;
+  background: var(--bg-secondary) !important;
+  border-right: 1px solid var(--border) !important;
+  user-select: none;
+}
+
+/* Hide file list and collapse */
+.d2h-file-collapse {
+  display: none !important;
+}
+
+.d2h-file-list {
+  display: none !important;
+}
+
+/* File wrapper */
+.d2h-file-wrapper {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  margin-bottom: 16px !important;
+  overflow: hidden !important;
+  background: var(--bg-tertiary) !important;
+}
+
+.d2h-diff-tbody tr {
+  border-color: transparent !important;
+}
+
+/* Side-by-side */
+.d2h-code-side-linenumber {
+  color: var(--text-tertiary) !important;
+  background: var(--bg-secondary) !important;
+  border-right: 1px solid var(--border) !important;
+}
+
+.d2h-emptyplaceholder,
+.d2h-code-side-emptyplaceholder {
+  background: var(--bg-tertiary) !important;
+  border-color: transparent !important;
+}
