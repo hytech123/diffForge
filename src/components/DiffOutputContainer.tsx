@@ -63,9 +63,21 @@ export default function DiffOutputContainer({
       .d2h-diff-tbody tr { border-color: transparent !important; }
       .d2h-emptyplaceholder, .d2h-code-side-emptyplaceholder { background: #1c2128 !important; border-color: transparent !important; }
       .d2h-code-side-linenumber { color: #6e7681 !important; background: #161b22 !important; border-right: 1px solid rgba(240,246,252,0.06) !important; }
-      ins { text-decoration: none !important; }
-      del { text-decoration: none !important; }
+      .summary-banner { display:flex; gap:12px; padding:12px 16px; margin-bottom:20px; background:#161b22; border:1px solid rgba(240,246,252,0.06); border-radius:10px; font-family:system-ui,sans-serif; align-items:center; flex-wrap:wrap; }
+      .summary-banner h2 { font-size:13px; font-weight:600; color:#8b949e; margin:0; margin-right:auto; }
+      .summary-chip { font-size:12px; font-weight:600; padding:4px 10px; border-radius:20px; }
+      .chip-files { background:rgba(56,139,253,0.12); color:#79c0ff; }
+      .chip-add { background:rgba(35,134,54,0.18); color:#56d364; }
+      .chip-del { background:rgba(218,54,51,0.18); color:#f85149; }
     `;
+
+    const summaryBanner = `
+      <div class="summary-banner">
+        <h2>DiffForge Report</h2>
+        <span class="summary-chip chip-files">${fileCount} file${fileCount !== 1 ? 's' : ''} changed</span>
+        <span class="summary-chip chip-add">+${metrics.added} additions</span>
+        <span class="summary-chip chip-del">-${metrics.deleted} deletions</span>
+      </div>`;
 
     const fullHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -76,7 +88,7 @@ export default function DiffOutputContainer({
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/diff2html@3.4.56/bundles/css/diff2html.min.css" />
   <style>${embeddedCss}</style>
 </head>
-<body>${htmlOutput}</body>
+<body>${summaryBanner}${htmlOutput}</body>
 </html>`;
 
     const blob = new Blob([fullHtml], { type: 'text/html' });
