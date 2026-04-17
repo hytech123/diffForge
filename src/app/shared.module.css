@@ -61,10 +61,40 @@
   font-weight: 700;
 }
 
+.navTabs {
+  display: flex;
+  gap: 8px;
+  margin-left: 24px;
+  border-left: 1px solid var(--border);
+  padding-left: 24px;
+}
+
+.navTab {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.navTab:hover {
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.navTabActive {
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+}
+
 .headerActions {
   display: flex;
   align-items: center;
   gap: 6px;
+  margin-left: auto;
 }
 
 /* --------------- Main Content --------------- */
