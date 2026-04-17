@@ -62,8 +62,8 @@ function DropZone({
         </div>
         <div className={styles.dropHint}>
           {file
-            ? `${(file.size / 1024).toFixed(1)} KB`
-            : 'Click or drop .docx / .txt here'}
+            ? `${(file.size / 1024).toFixed(1)} KB · ${file.name.split('.').pop()?.toUpperCase()}`
+            : '.docx · .md · .txt'}
         </div>
       </div>
     </div>
