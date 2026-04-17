@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import * as Diff from 'diff';
 import { html as diff2html, parse } from 'diff2html';
 import 'diff2html/bundles/css/diff2html.min.css';
@@ -9,7 +9,6 @@ import DiffOutputContainer from '@/components/DiffOutputContainer';
 
 type ViewMode = 'line-by-line' | 'side-by-side';
 
-// Separate stable component — fixes Rules of Hooks violation from inline definition
 function DropZone({
   file,
   setFile,
@@ -70,10 +69,8 @@ function DropZone({
   );
 }
 
-// Extract text from a file — uses mammoth's browser bundle for .docx
 async function extractText(file: File): Promise<string> {
   if (file.name.endsWith('.docx')) {
-    // Dynamically import the browser-compatible bundle of mammoth
     const mammoth = (await import('mammoth/mammoth.browser')).default;
     const arrayBuffer = await file.arrayBuffer();
     const result = await mammoth.extractRawText({ arrayBuffer });
@@ -82,14 +79,45 @@ async function extractText(file: File): Promise<string> {
   return file.text();
 }
 
+function renderPatch(
+  patchString: string,
+  mode: ViewMode,
+  setHtmlOutput: (h: string) => void,
+  setFileCount: (n: number) => void,
+  setMetrics: (m: { added: number; deleted: number }) => void,
+) {
+  const diffJson = parse(patchString);
+  let add = 0,
+    del = 0;
+  diffJson.forEach((f: { addedLines?: number; deletedLines?: number }) => {
+    add += f.addedLines || 0;
+    del += f.deletedLines || 0;
+  });
+  setMetrics({ added: add, deleted: del });
+  setFileCount(diffJson.length);
+
+  const result = diff2html(patchString, {
+    drawFileList: false,
+    matching: 'lines',
+    outputFormat: mode,
+    diffStyle: 'word',
+    renderNothingWhenEmpty: false,
+  });
+  setHtmlOutput(result);
+}
+
 export default function ComparePage() {
   const [fileA, setFileA] = useState<File | null>(null);
   const [fileB, setFileB] = useState<File | null>(null);
   const [htmlOutput, setHtmlOutput] = useState('');
-  const [viewMode, setViewMode] = useState<ViewMode>('line-by-line');
+  // Default to side-by-side — makes more sense for document comparison
+  const [viewMode, setViewMode] = useState<ViewMode>('side-by-side');
   const [isConverting, setIsConverting] = useState(false);
   const [fileCount, setFileCount] = useState(0);
   const [metrics, setMetrics] = useState({ added: 0, deleted: 0 });
+
+  // Cache the patch so we can re-render without re-reading files
+  const patchRef = useRef('');
 
   const fileInputRefA = useRef<HTMLInputElement>(null);
   const fileInputRefB = useRef<HTMLInputElement>(null);
@@ -102,28 +130,15 @@ export default function ComparePage() {
         extractText(fileA),
         extractText(fileB),
       ]);
-
-      const fileName = fileA.name;
-      const patchString = Diff.createPatch(fileName, textA, textB);
-
-      const diffJson = parse(patchString);
-      let add = 0,
-        del = 0;
-      diffJson.forEach((f: { addedLines?: number; deletedLines?: number }) => {
-        add += f.addedLines || 0;
-        del += f.deletedLines || 0;
-      });
-      setMetrics({ added: add, deleted: del });
-      setFileCount(diffJson.length);
-
-      const result = diff2html(patchString, {
-        drawFileList: false,
-        matching: 'lines',
-        outputFormat: viewMode,
-        diffStyle: 'word',
-        renderNothingWhenEmpty: false,
-      });
-      setHtmlOutput(result);
+      const patchString = Diff.createPatch(fileA.name, textA, textB);
+      patchRef.current = patchString;
+      renderPatch(
+        patchString,
+        viewMode,
+        setHtmlOutput,
+        setFileCount,
+        setMetrics,
+      );
     } catch (err) {
       console.error(err);
       alert(
@@ -134,12 +149,27 @@ export default function ComparePage() {
     }
   };
 
+  // Re-render with new mode instantly (no file I/O needed)
+  const handleViewModeChange = useCallback((mode: ViewMode) => {
+    setViewMode(mode);
+    if (patchRef.current) {
+      renderPatch(
+        patchRef.current,
+        mode,
+        setHtmlOutput,
+        setFileCount,
+        setMetrics,
+      );
+    }
+  }, []);
+
   const handleClear = () => {
     setFileA(null);
     setFileB(null);
     setHtmlOutput('');
     setFileCount(0);
     setMetrics({ added: 0, deleted: 0 });
+    patchRef.current = '';
   };
 
   return (
@@ -181,13 +211,13 @@ export default function ComparePage() {
           <div className={styles.viewToggle}>
             <button
               className={`${styles.viewBtn} ${viewMode === 'line-by-line' ? styles.viewBtnActive : ''}`}
-              onClick={() => setViewMode('line-by-line')}
+              onClick={() => handleViewModeChange('line-by-line')}
             >
               Line by Line
             </button>
             <button
               className={`${styles.viewBtn} ${viewMode === 'side-by-side' ? styles.viewBtnActive : ''}`}
-              onClick={() => setViewMode('side-by-side')}
+              onClick={() => handleViewModeChange('side-by-side')}
             >
               Side by Side
             </button>

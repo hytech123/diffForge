@@ -14,6 +14,7 @@ export default function DiffOutputContainer({
   fileCount,
   metrics,
 }: DiffOutputProps) {
+  const diffOutputRef = useRef<HTMLDivElement>(null);
   const [pdfSettings, setPdfSettings] = useState({
     showModal: false,
     companyName: 'DiffForge Report',
@@ -33,6 +34,40 @@ export default function DiffOutputContainer({
     }
   }, []);
 
+  // Inject collapse behaviour after HTML renders
+  useEffect(() => {
+    const container = diffOutputRef.current;
+    if (!container || !htmlOutput) return;
+
+    const headers = container.querySelectorAll<HTMLElement>('.d2h-file-header');
+    headers.forEach((header) => {
+      // Add collapse arrow if not already added
+      if (!header.querySelector('.d2h-collapse-arrow')) {
+        const arrow = document.createElement('span');
+        arrow.className = 'd2h-collapse-arrow';
+        arrow.innerHTML = '▾';
+        arrow.style.cssText =
+          'margin-left:auto; font-size:14px; transition:transform 0.2s; cursor:pointer; color:var(--text-tertiary); flex-shrink:0;';
+        header.style.cursor = 'pointer';
+        header.style.display = 'flex';
+        header.style.alignItems = 'center';
+        header.appendChild(arrow);
+      }
+
+      const wrapper = header.closest<HTMLElement>('.d2h-file-wrapper');
+      if (!wrapper) return;
+
+      const onClick = () => {
+        const isCollapsed = wrapper.classList.toggle('d2h-collapsed');
+        const arrow = header.querySelector<HTMLElement>('.d2h-collapse-arrow');
+        if (arrow) arrow.style.transform = isCollapsed ? 'rotate(-90deg)' : '';
+      };
+
+      // Remove old listener before re-adding (html re-renders)
+      header.removeEventListener('click', onClick);
+      header.addEventListener('click', onClick);
+    });
+  }, [htmlOutput]);
   const handleCopyHtml = () => {
     navigator.clipboard.writeText(htmlOutput);
   };
@@ -79,6 +114,35 @@ export default function DiffOutputContainer({
         <span class="summary-chip chip-del">-${metrics.deleted} deletions</span>
       </div>`;
 
+    const collapseScript = `
+      document.addEventListener('DOMContentLoaded', function () {
+        var headers = document.querySelectorAll('.d2h-file-header');
+        headers.forEach(function (header) {
+          var arrow = document.createElement('span');
+          arrow.textContent = ' ▾';
+          arrow.style.cssText = 'margin-left:auto; font-size:13px; transition:transform 0.2s; display:inline-block; color:#8b949e;';
+          header.style.cursor = 'pointer';
+          header.style.display = 'flex';
+          header.style.alignItems = 'center';
+          header.appendChild(arrow);
+          header.addEventListener('click', function () {
+            var wrapper = header.closest('.d2h-file-wrapper');
+            if (!wrapper) return;
+            var collapsed = wrapper.classList.toggle('d2h-collapsed');
+            arrow.style.transform = collapsed ? 'rotate(-90deg)' : '';
+          });
+        });
+      });
+    `;
+
+    const collapseCss = `
+      .d2h-collapsed .d2h-diff-table,
+      .d2h-collapsed .d2h-code-wrapper,
+      .d2h-collapsed .d2h-file-diff,
+      .d2h-collapsed tbody { display: none !important; }
+      .d2h-collapsed { border-bottom: none !important; }
+    `;
+
     const fullHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,9 +150,9 @@ export default function DiffOutputContainer({
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DiffForge Output</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/diff2html@3.4.56/bundles/css/diff2html.min.css" />
-  <style>${embeddedCss}</style>
+  <style>${embeddedCss}${collapseCss}</style>
 </head>
-<body>${summaryBanner}${htmlOutput}</body>
+<body>${summaryBanner}${htmlOutput}<script>${collapseScript}</script></body>
 </html>`;
 
     const blob = new Blob([fullHtml], { type: 'text/html' });
@@ -201,6 +265,7 @@ export default function DiffOutputContainer({
           </div>
         </div>
         <div
+          ref={diffOutputRef}
           className={styles.diffOutput}
           dangerouslySetInnerHTML={{ __html: htmlOutput }}
         />

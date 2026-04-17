@@ -427,6 +427,22 @@
   overflow: hidden;
 }
 
+/* Collapse toggle — applied by JS via useEffect */
+:global(.d2h-file-header) {
+  user-select: none;
+}
+
+:global(.d2h-collapsed .d2h-diff-table),
+:global(.d2h-collapsed .d2h-code-wrapper),
+:global(.d2h-collapsed .d2h-file-diff),
+:global(.d2h-collapsed tbody) {
+  display: none !important;
+}
+
+:global(.d2h-collapsed) {
+  border-bottom: none !important;
+}
+
 /* --------------- Empty State --------------- */
 
 .emptyState {
