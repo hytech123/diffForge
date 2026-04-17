@@ -47,7 +47,7 @@ export default function DiffOutputContainer({
         arrow.className = 'd2h-collapse-arrow';
         arrow.innerHTML = '▾';
         arrow.style.cssText =
-          'margin-left:auto; font-size:14px; transition:transform 0.2s; cursor:pointer; color:var(--text-tertiary); flex-shrink:0;';
+          'margin-left:auto; font-size:35px; transition:transform 0.2s; cursor:pointer; color:var(--text-tertiary); flex-shrink:0;';
         header.style.cursor = 'pointer';
         header.style.display = 'flex';
         header.style.alignItems = 'center';
