@@ -13,12 +13,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://diffforge.app'), // TODO: update with production domain
+  metadataBase: new URL('https://diffforge.me'), // TODO: update with production domain
   title: 'DiffForge — Free Diff & Patch Visualizer Online',
+  icons: {
+    icon: '/favicon.ico',
+  },
   description:
     'Free online tool to visualize .diff and .patch files as beautiful, interactive HTML. Drag-and-drop or paste your git diff — no signup, no upload, 100% client-side.',
   keywords: [
+    'diff checker',
     'diff viewer',
+    'diff tool',
+    'diff check',
     'patch viewer',
     'diff to html',
     'git diff visualizer',
