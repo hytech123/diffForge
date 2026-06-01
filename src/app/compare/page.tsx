@@ -45,7 +45,7 @@ function DropZone({
       <input
         ref={inputRef}
         type='file'
-        accept='.docx,.txt,.md'
+        accept='.docx,.txt,.md,.json'
         onChange={(e) => {
           const f = e.target.files?.[0];
           if (f) setFile(f);
@@ -55,18 +55,24 @@ function DropZone({
       <div className={styles.dropContent}>
         <div className={styles.dropIcon}>{icon}</div>
         <div
-          className={styles.dropTitle}
-          style={{ color: file ? 'var(--accent)' : '' }}
+          className={styles.dropTitle} style={{ color: file ? 'var(--accent)' : '' }}
         >
           {file ? file.name : title}
         </div>
         <div className={styles.dropHint}>
           {file
             ? `${(file.size / 1024).toFixed(1)} KB · ${file.name.split('.').pop()?.toUpperCase()}`
-            : '.docx · .md · .txt'}
+            : '.docx · .md · .txt · .json'}
         </div>
       </div>
     </div>
+  );
+}
+
+function isJsonFile(file: File): boolean {
+  return (
+    file.name.toLowerCase().endsWith('.json') ||
+    file.type === 'application/json'
   );
 }
 
@@ -78,6 +84,20 @@ async function extractText(file: File): Promise<string> {
     return result.value;
   }
   return file.text();
+}
+
+async function prepareComparableText(file: File): Promise<string> {
+  const text = await extractText(file);
+
+  if (!isJsonFile(file)) {
+    return text;
+  }
+
+  try {
+    return `${JSON.stringify(JSON.parse(text), null, 2)}\n`;
+  } catch {
+    throw new Error(`${file.name} is not valid JSON.`);
+  }
 }
 
 function renderPatch(
@@ -128,8 +148,8 @@ export default function ComparePage() {
     setIsConverting(true);
     try {
       const [textA, textB] = await Promise.all([
-        extractText(fileA),
-        extractText(fileB),
+        prepareComparableText(fileA),
+        prepareComparableText(fileB),
       ]);
       const patchString = Diff.createPatch(fileA.name, textA, textB);
       patchRef.current = patchString;
@@ -143,7 +163,9 @@ export default function ComparePage() {
     } catch (err) {
       console.error(err);
       alert(
-        'Error comparing files. Ensure they are valid .docx or text files.',
+        err instanceof Error
+          ? err.message
+          : 'Error comparing files. Ensure they are valid .docx, .json, or text files.',
       );
     } finally {
       setIsConverting(false);
@@ -233,9 +255,9 @@ export default function ComparePage() {
       />
 
       <FeaturesShowcase
-        badges={['.docx', '.md', '.txt']}
+        badges={['.docx', '.md', '.txt', '.json']}
         heroTitle='Compare Documents Online — Free & Private'
-        heroDescription='Upload any two Word, Markdown, or text files and instantly see what changed between them. DiffForge extracts clean text content and renders a precise, character-level diff. No server, no storage, no account required. Works completely offline in your browser.'
+        heroDescription='Upload any two Word, Markdown, JSON, or text files and instantly see what changed between them. DiffForge extracts clean text content, formats JSON before comparison, and renders a precise, character-level diff. No server, no storage, no account required. Works completely offline in your browser.'
         features={[
           {
             title: 'Extract & Compare Word Docs',

@@ -36,6 +36,12 @@ export default function PageLayout({
           >
             Compare Docs
           </Link>
+          <Link
+            href='/format-json'
+            className={`${styles.navTab} ${pathname === '/format-json' ? styles.navTabActive : ''}`}
+          >
+            Format JSON
+          </Link>
         </nav>
 
         <div className={styles.headerActions}>

@@ -21,6 +21,7 @@ export const metadata: Metadata = {
   description:
     'Free online tool to visualize .diff and .patch files as beautiful, interactive HTML. Drag-and-drop or paste your git diff — no signup, no upload, 100% client-side.',
   keywords: [
+    'diff 2 html',
     'diff checker',
     'diff viewer',
     'diff tool',
