@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import Script from 'next/script';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -63,7 +64,7 @@ export const metadata: Metadata = {
       'Visualize your .diff and .patch files instantly. Beautiful dark-themed HTML output — free, private, no signup.',
   },
 };
-
+const GA_ID = 'G-HTTBVSBYYK';
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -72,6 +73,20 @@ export default function RootLayout({
   return (
     <html lang='en' className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>{children}</body>
+
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+        strategy='afterInteractive'
+      />
+
+      <Script id='google-analytics' strategy='afterInteractive'>
+        {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}');
+          `}
+      </Script>
     </html>
   );
 }
