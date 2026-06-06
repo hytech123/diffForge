@@ -5,12 +5,17 @@ import styles from '@/app/shared.module.css';
 
 export default function PageLayout({
   children,
+  mainClassName,
   onSampleClick,
 }: {
   children: React.ReactNode;
+  mainClassName?: string;
   onSampleClick?: () => void;
 }) {
   const pathname = usePathname();
+  const mainClass = mainClassName
+    ? `${styles.main} ${mainClassName}`
+    : styles.main;
 
   return (
     <div className={styles.page}>
@@ -54,7 +59,7 @@ export default function PageLayout({
       </header>
 
       {/* Main Content */}
-      <main className={styles.main}>{children}</main>
+      <main className={mainClass}>{children}</main>
 
       {/* Footer */}
       <footer className={styles.footer}>

@@ -110,6 +110,11 @@
   gap: 24px;
 }
 
+.jsonMain {
+  box-sizing: border-box;
+  max-width: min(1680px, calc(100vw - 48px));
+}
+
 /* --------------- Input Section --------------- */
 
 .inputSection {
@@ -221,6 +226,7 @@
 }
 
 .textarea {
+  box-sizing: border-box;
   width: 100%;
   min-height: 160px;
   padding: 14px 16px;
@@ -361,21 +367,216 @@
   font-size: 11px;
 }
 
-.jsonTextarea {
+.jsonPanelHeaderActions {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.jsonPanelViewToggle {
+  flex-shrink: 0;
+}
+
+.jsonPanelViewBtn {
+  padding: 4px 9px;
+  font-size: 11px;
+}
+
+.jsonTextarea,
+.jsonTextareaWithLines,
+.jsonTreeViewport {
   min-height: 430px;
-  height: min(58vh, 620px);
+  height: clamp(430px, 64vh, 780px);
+}
+
+.jsonTextarea,
+.jsonTextareaWithLines {
   border: none;
   border-radius: 0;
   background: rgba(13, 17, 23, 0.56);
+}
+
+.jsonTextarea {
   resize: vertical;
 }
 
-.jsonTextarea:focus {
+.jsonTextarea:focus,
+.jsonTextareaWithLines:focus-within {
   box-shadow: inset 0 0 0 1px var(--accent);
 }
 
 .jsonOutputTextarea {
   color: #d2e8df;
+}
+
+.jsonTextareaWithLines {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  overflow: hidden;
+  resize: vertical;
+}
+
+.jsonLineNumbers {
+  min-width: 10px;
+  overflow: hidden;
+  padding: 14px 10px 14px 8px;
+  border-right: 1px solid var(--border);
+  background: rgba(13, 17, 23, 0.36);
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  text-align: right;
+  user-select: none;
+}
+
+.jsonLineNumbers span {
+  display: block;
+  white-space: nowrap;
+}
+
+.jsonNumberedTextarea {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 14px 16px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  resize: none;
+}
+
+.jsonNumberedTextarea::placeholder {
+  color: var(--text-tertiary);
+  font-size: 12px;
+}
+
+.jsonTreeViewport {
+  box-sizing: border-box;
+  overflow: auto;
+  padding: 12px 0;
+  background: rgba(13, 17, 23, 0.56);
+  color: #d2e8df;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.jsonTree {
+  counter-reset: json-tree-line;
+  width: 100%;
+  min-width: 0;
+}
+
+.jsonTreeEmpty {
+  padding: 2px 16px;
+  color: var(--text-tertiary);
+  font-size: 12px;
+}
+
+.jsonTreeNode {
+  min-width: 0;
+}
+
+.jsonTreeRow {
+  --json-depth: 0;
+  box-sizing: border-box;
+  counter-increment: json-tree-line;
+  min-height: 24px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  width: 100%;
+  min-width: 100%;
+  padding: 0 16px 0 8px;
+  white-space: nowrap;
+}
+
+.jsonTreeRow::before {
+  content: counter(json-tree-line);
+  width: 40px;
+  flex: 0 0 40px;
+  color: var(--text-tertiary);
+  font-size: 12px;
+  text-align: right;
+  user-select: none;
+}
+
+.jsonTreeBranchRow {
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.jsonTreeBranchRow:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.jsonTreeLeafRow,
+.jsonTreeClosingRow {
+  color: var(--text-secondary);
+}
+
+.jsonTreeToggleIcon,
+.jsonTreeToggleSpacer {
+  width: 12px;
+  flex: 0 0 12px;
+  margin-left: calc(var(--json-depth) * 18px);
+}
+
+.jsonTreeToggleIcon {
+  color: var(--text-tertiary);
+  font-size: 11px;
+}
+
+.jsonTreeKey {
+  color: #79c0ff;
+}
+
+.jsonTreeIndex {
+  color: var(--text-tertiary);
+}
+
+.jsonTreeColon,
+.jsonTreeComma,
+.jsonTreeBracket {
+  color: var(--text-tertiary);
+}
+
+.jsonTreeSummary {
+  color: var(--text-tertiary);
+  font-size: 11px;
+}
+
+.jsonTreeValue {
+  color: var(--text-secondary);
+}
+
+.jsonTreeString {
+  color: #a5d6ff;
+}
+
+.jsonTreeNumber {
+  color: #79c0ff;
+}
+
+.jsonTreeBoolean {
+  color: #ffab70;
+}
+
+.jsonTreeNull {
+  color: #ffa198;
 }
 
 .jsonStatsBar {
@@ -391,6 +592,162 @@
   border: 1px solid var(--border);
   border-radius: 999px;
   background: rgba(22, 27, 34, 0.5);
+}
+
+.jsonAnalysisPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: rgba(22, 27, 34, 0.35);
+}
+
+.jsonAnalysisHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.jsonAnalysisTitle {
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.jsonAnalysisMeta {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.jsonAnalysisGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 8px;
+}
+
+.jsonAnalysisMetric {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+  padding: 8px 10px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  background: rgba(13, 17, 23, 0.4);
+}
+
+.jsonAnalysisMetric span {
+  color: var(--text-tertiary);
+  font-size: 11px;
+}
+
+.jsonAnalysisMetric strong {
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.jsonAnalysisMetric small {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.jsonDomainList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.jsonDomainChip {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  padding: 4px 8px;
+  border: 1px solid rgba(45, 212, 168, 0.18);
+  border-radius: 999px;
+  background: rgba(45, 212, 168, 0.08);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.jsonDomainChip strong {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.jsonDomainName {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.jsonLinkList {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.jsonLinkListHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--text-tertiary);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.jsonLinkItem {
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 9px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  background: rgba(13, 17, 23, 0.38);
+  color: #a5d6ff;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+
+.jsonLinkItem:hover {
+  border-color: rgba(45, 212, 168, 0.24);
+  background: rgba(45, 212, 168, 0.08);
+  color: var(--accent-hover);
+}
+
+.jsonLinkItem strong {
+  flex: 0 0 auto;
+  color: var(--accent);
+  font-size: 11px;
+}
+
+.jsonLinkText {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .errorBanner {
@@ -1130,6 +1487,19 @@
 
 /* --------------- Responsive --------------- */
 
+@media (max-width: 900px) {
+  .jsonWorkspace {
+    grid-template-columns: 1fr;
+  }
+
+  .jsonTextarea,
+  .jsonTextareaWithLines,
+  .jsonTreeViewport {
+    min-height: 340px;
+    height: clamp(340px, 48vh, 560px);
+  }
+}
+
 @media (max-width: 640px) {
   .header {
     height: auto;
@@ -1155,6 +1525,10 @@
   .main {
     padding: 20px 16px;
     gap: 16px;
+  }
+
+  .jsonMain {
+    max-width: 100%;
   }
 
   .dropZone {
@@ -1189,13 +1563,25 @@
     max-width: none;
   }
 
+  .jsonAnalysisHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .jsonAnalysisMeta {
+    white-space: normal;
+  }
+
   .jsonWorkspace {
     grid-template-columns: 1fr;
   }
 
-  .jsonTextarea {
+  .jsonTextarea,
+  .jsonTextareaWithLines,
+  .jsonTreeViewport {
     min-height: 300px;
-    height: 42vh;
+    height: clamp(300px, 42vh, 460px);
   }
 
   .outputActions {
