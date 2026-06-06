@@ -47,6 +47,12 @@ export default function PageLayout({
           >
             Format JSON
           </Link>
+          <Link
+            href='/json-diff'
+            className={`${styles.navTab} ${pathname === '/json-diff' ? styles.navTabActive : ''}`}
+          >
+            JSON Diff
+          </Link>
         </nav>
 
         <div className={styles.headerActions}>

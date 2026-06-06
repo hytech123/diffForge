@@ -579,6 +579,54 @@
   color: #ffa198;
 }
 
+.jsonDiffRowAdded {
+  background: var(--diff-add-bg);
+}
+
+.jsonDiffRowRemoved {
+  background: var(--diff-del-bg);
+}
+
+.jsonDiffRowModified {
+  background: rgba(210, 153, 34, 0.16);
+}
+
+.jsonDiffModifiedValue {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.jsonDiffOldValue {
+  text-decoration: line-through;
+  opacity: 0.72;
+}
+
+.jsonDiffArrow {
+  color: var(--text-tertiary);
+}
+
+.jsonDiffMetricsBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.jsonDiffMetricAdded {
+  color: var(--diff-add-text);
+}
+
+.jsonDiffMetricRemoved {
+  color: var(--diff-del-text);
+}
+
+.jsonDiffMetricModified {
+  color: #e3b341;
+}
+
 .jsonStatsBar {
   display: flex;
   flex-wrap: wrap;
