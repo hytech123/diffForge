@@ -36,8 +36,8 @@ function getBranchValue(node: JsonDiffNode): unknown {
   return node.newValue ?? node.value ?? node.oldValue;
 }
 
-function shouldStartCollapsed(depth: number, status: DiffStatus): boolean {
-  return depth > 1 && status === 'unchanged';
+function shouldStartCollapsed(node: JsonDiffNode, depth: number): boolean {
+  return depth > 1 && node.status === 'unchanged' && !node.hasChanges;
 }
 
 function JsonDiffTreeLabel({
@@ -109,7 +109,7 @@ function JsonDiffTreeNode({
   node: JsonDiffNode;
 }) {
   const [isCollapsed, setIsCollapsed] = useState(() =>
-    shouldStartCollapsed(depth, node.status),
+    shouldStartCollapsed(node, depth),
   );
   const comma = isLast ? '' : ',';
   const branchValue = getBranchValue(node);

@@ -3,6 +3,7 @@ export type DiffStatus = 'unchanged' | 'added' | 'removed' | 'modified';
 export type JsonDiffNode = {
   key?: string;
   isArrayItem?: boolean;
+  hasChanges?: boolean;
   status: DiffStatus;
   value?: unknown;
   oldValue?: unknown;
@@ -55,12 +56,13 @@ function branchNode(
     newValue?: unknown;
   } = {},
 ): JsonDiffNode {
-  const hasChanges = children.some((child) => child.status !== 'unchanged');
-  const resolvedStatus =
-    status === 'unchanged' && hasChanges ? 'modified' : status;
+  const hasChanges = children.some(
+    (child) => child.status !== 'unchanged' || Boolean(child.hasChanges),
+  );
 
   return {
-    status: resolvedStatus,
+    status,
+    hasChanges,
     children,
     ...options,
   };
@@ -169,11 +171,19 @@ export function countDiffMetrics(root: JsonDiffNode): {
 } {
   const metrics = { added: 0, removed: 0, modified: 0 };
 
-  const walk = (node: JsonDiffNode) => {
-    if (node.status === 'added') metrics.added += 1;
-    if (node.status === 'removed') metrics.removed += 1;
+  const walk = (node: JsonDiffNode, parentStatus?: DiffStatus) => {
+    if (node.status === 'added') {
+      if (parentStatus !== 'added') metrics.added += 1;
+      return;
+    }
+
+    if (node.status === 'removed') {
+      if (parentStatus !== 'removed') metrics.removed += 1;
+      return;
+    }
+
     if (node.status === 'modified') metrics.modified += 1;
-    node.children?.forEach(walk);
+    node.children?.forEach((child) => walk(child, node.status));
   };
 
   walk(root);
